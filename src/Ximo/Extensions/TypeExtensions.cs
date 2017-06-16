@@ -2,7 +2,7 @@
 using System.Reflection;
 using Ximo.Validation;
 
-namespace Ximo.Utilities
+namespace Ximo.Extensions
 {
     /// <summary>
     ///     Class containing <see cref="Type" /> utilities.
