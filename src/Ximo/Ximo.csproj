@@ -15,6 +15,8 @@
     <RepositoryType>Github</RepositoryType>
     <PackageTags>CQRS Event Sourcing .NET Core Domain Driven Design</PackageTags>
     <PackageReleaseNotes>Version 2.0 upgrade,</PackageReleaseNotes>
+    <AssemblyVersion>2.0.0.1</AssemblyVersion>
+    <FileVersion>2.0.0.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
