@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,10 +28,15 @@ namespace Ximo.Domain
         public void Publish<TDomainEvent>(TDomainEvent @event, bool throwWhenNotSubscribedTo = true)
             where TDomainEvent : class
         {
+            var handlerType = typeof(IDomainEventHandler<>);
+            var eventType = @event.GetType();
+            var typeToBeResolved = handlerType.MakeGenericType(eventType);
+
             var handler = throwWhenNotSubscribedTo
-                ? _serviceProvider.GetRequiredService<IDomainEventHandler<TDomainEvent>>()
-                : _serviceProvider.GetService<IDomainEventHandler<TDomainEvent>>();
-            handler.Handle(@event);
+                ? _serviceProvider.GetRequiredService(typeToBeResolved)
+                : _serviceProvider.GetService(typeToBeResolved);
+            typeToBeResolved.GetRuntimeMethod("Handle", new Type[] {eventType}).Invoke(handler, new object[]{@event});
+            //handler.Handle(@event);
         }
 
         /// <summary>
