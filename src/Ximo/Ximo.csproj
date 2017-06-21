@@ -4,7 +4,7 @@
     <TargetFramework>netstandard1.6</TargetFramework>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>2.0.0.3</Version>
+    <Version>2.0.1</Version>
     <Authors>Omar Besiso</Authors>
     <Company>ThoughtDesign</Company>
     <Description>Ximo is a toolset of selected extensions and utilities to assist with learning/development tasks revolving around domain driven design, CQRS and Event Sourcing.</Description>
@@ -14,9 +14,9 @@
     <RepositoryUrl>https://github.com/ThoughtDesign/Ximo</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>CQRS Event Sourcing .NET Core Domain Driven Design</PackageTags>
-    <PackageReleaseNotes>Version 2.0 upgrade,</PackageReleaseNotes>
-    <AssemblyVersion>2.0.0.3</AssemblyVersion>
-    <FileVersion>2.0.0.3</FileVersion>
+    <PackageReleaseNotes>Domain event bus enhancements.</PackageReleaseNotes>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <FileVersion>2.0.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

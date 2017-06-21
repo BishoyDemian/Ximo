@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Ximo.Domain
 {
@@ -12,6 +12,7 @@ namespace Ximo.Domain
     /// <seealso cref="Ximo.Domain.IDomainEventBus" />
     internal class IocDomainEventBus : IDomainEventBus
     {
+        private static readonly Type HandlerType = typeof(IDomainEventHandler<>);
         private readonly IServiceProvider _serviceProvider;
 
         public IocDomainEventBus(IServiceProvider serviceProvider)
@@ -24,19 +25,42 @@ namespace Ximo.Domain
         /// </summary>
         /// <typeparam name="TDomainEvent">The type of the domain event.</typeparam>
         /// <param name="event">The domain event.</param>
-        /// <param name="throwWhenNotSubscribedTo">Throw an exception when the event has no subscribers</param>
-        public void Publish<TDomainEvent>(TDomainEvent @event, bool throwWhenNotSubscribedTo = true)
+        /// <param name="throwExceptionWhenNotSubscribedTo">Throw an exception when the event has no subscribers</param>
+        /// <remarks>
+        ///     If the event is a concrete type, the interfaces of the event will be looked up and in turn any subscriber to the
+        ///     conretet type or any of the interfaces will be called. Order is not guaranteed in case of multiple exceptions
+        ///     except that the conrete type handler will be the last to be called. This does not include support for class
+        ///     inheritance and as such base classes will be ignored when searching for subscribers.
+        /// </remarks>
+        public void Publish<TDomainEvent>(TDomainEvent @event, bool throwExceptionWhenNotSubscribedTo = true)
             where TDomainEvent : class
         {
-            var handlerType = typeof(IDomainEventHandler<>);
-            var eventType = @event.GetType();
-            var typeToBeResolved = handlerType.MakeGenericType(eventType);
+            var concreteEventType = @event.GetType();
+            var interfaces = concreteEventType.GetTypeInfo().GetInterfaces().ToList();
 
-            var handler = throwWhenNotSubscribedTo
-                ? _serviceProvider.GetRequiredService(typeToBeResolved)
-                : _serviceProvider.GetService(typeToBeResolved);
-            typeToBeResolved.GetRuntimeMethod("Handle", new Type[] {eventType}).Invoke(handler, new object[]{@event});
-            //handler.Handle(@event);
+            var typesToProcess = interfaces;
+            typesToProcess.Add(concreteEventType);
+
+            var handlerFound = false;
+
+            foreach (var eventType in typesToProcess)
+            {
+                var typeToBeResolved = HandlerType.MakeGenericType(eventType);
+                var handler = _serviceProvider.GetService(typeToBeResolved);
+
+                if (handler != null)
+                {
+                    handlerFound = true;
+                    typeToBeResolved.GetRuntimeMethod("Handle", new[] {eventType})
+                        .Invoke(handler, new object[] {@event});
+                }
+            }
+
+            if (throwExceptionWhenNotSubscribedTo && !handlerFound)
+            {
+                throw new InvalidOperationException(
+                    $"The event of type '{concreteEventType.FullName}' has no registered event handlers.");
+            }
         }
 
         /// <summary>

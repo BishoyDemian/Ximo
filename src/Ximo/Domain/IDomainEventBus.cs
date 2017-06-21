@@ -16,8 +16,8 @@ namespace Ximo.Domain
         /// </summary>
         /// <typeparam name="TDomainEvent">The type of the domain event.</typeparam>
         /// <param name="event">The domain event.</param>
-        /// <param name="throwWhenNotSubscribedTo">Throw an exception when the event has no subscribers</param>
-        void Publish<TDomainEvent>(TDomainEvent @event, bool throwWhenNotSubscribedTo = true)
+        /// <param name="throwExceptionWhenNotSubscribedTo">Throw an exception when the event has no subscribers</param>
+        void Publish<TDomainEvent>(TDomainEvent @event, bool throwExceptionWhenNotSubscribedTo = true)
             where TDomainEvent : class;
 
         /// <summary>
