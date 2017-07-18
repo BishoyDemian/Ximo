@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,12 +32,16 @@ namespace Ximo.Cqrs.Security
         /// <exception cref="SecurityException"></exception>
         public void Authorize<TMessage>(TMessage message) where TMessage : class
         {
-            var messageRules = _dependencyContainer.GetRequiredService<IMessageAuthorisationRules<TMessage>>();
+            var messageRules = _dependencyContainer.GetRequiredService<MessageAuthorisationRules<TMessage>>();
 
-            var securityExceptions =
-            (from rule in messageRules.Rules
-                where !rule.IsAuthorized(message)
-                select new SecurityException(rule.ErrorText)).ToList();
+            var securityExceptions = new List<SecurityException>();
+            foreach (var rule in messageRules.Rules)
+            {
+                var authorisationRule = (IAuthorizationRule<TMessage>) _dependencyContainer.GetService(rule);
+
+                if (!authorisationRule.IsAuthorized(message))
+                    securityExceptions.Add(new SecurityException(authorisationRule.ErrorText));
+            }
 
             switch (securityExceptions.Count)
             {

@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ximo.Cqrs;
+using Ximo.Cqrs.Security;
 using Ximo.Domain;
 
 namespace Ximo.DependencyInjection
@@ -154,6 +156,43 @@ namespace Ximo.DependencyInjection
             ServiceLifetime serviceLifetime = ServiceLifetime.Singleton)
         {
             return serviceCollection.AddSingleton<IDomainEventBus, IocDomainEventBus>();
+        }
+
+        /// <summary>
+        /// Registers a single authorisation rule, for a single message be it a command or query.
+        /// </summary>
+        /// <typeparam name="TMessage">The type of the message.</typeparam>
+        /// <typeparam name="TAuthorisationRule">The type of the authorisation rule.</typeparam>
+        /// <param name="serviceCollection">The service collection.</param>
+        /// <returns>A reference to this service collection isntance after the operation has completed.</returns>
+        public static IServiceCollection AddAuthorisationRule<TMessage, TAuthorisationRule>(this IServiceCollection serviceCollection)
+            where TMessage : class 
+            where TAuthorisationRule : class, IAuthorizationRule<TMessage>
+        {
+            serviceCollection.AddTransient<IAuthorizationRule<TMessage>, TAuthorisationRule>();
+
+            var serviceDescriptor =
+                serviceCollection.FirstOrDefault(sd => sd.ServiceType == typeof(MessageAuthorisationRules<TMessage>));
+
+            if (serviceDescriptor == null)
+            {
+                var serviceAuthorisationRules = new MessageAuthorisationRules<TMessage>();
+                serviceAuthorisationRules.AddAuthorisationRule<TAuthorisationRule>();
+                serviceDescriptor = new ServiceDescriptor(typeof(MessageAuthorisationRules<TMessage>),
+                    serviceAuthorisationRules);
+                serviceCollection.Add(serviceDescriptor);
+            }
+            else
+            {
+                var serviceAuthorisationRules = (MessageAuthorisationRules<TMessage>)serviceDescriptor.ImplementationInstance;
+                if (!serviceAuthorisationRules.Rules.Contains(typeof(TAuthorisationRule)))
+                {
+                    serviceAuthorisationRules.AddAuthorisationRule<TAuthorisationRule>();
+                }
+            }
+
+
+            return serviceCollection;
         }
 
         /// <summary>
