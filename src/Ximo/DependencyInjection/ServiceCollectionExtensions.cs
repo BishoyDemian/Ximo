@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ximo.Cqrs;
@@ -21,7 +20,7 @@ namespace Ximo.DependencyInjection
         /// <typeparam name="TCommandHandler">The type of the command handler.</typeparam>
         /// <param name="serviceCollection">The service collection to contain the registration.</param>
         /// <param name="serviceLifetime">The service lifetime. Default is Transient.</param>
-        /// <returns>A reference to this service collection isntance after the operation has completed.</returns>
+        /// <returns>A reference to this service collection instance after the operation has completed.</returns>
         public static IServiceCollection RegisterCommandHandler<TCommand, TCommandHandler>(
             this IServiceCollection serviceCollection, ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
             where TCommand : class
@@ -43,7 +42,7 @@ namespace Ximo.DependencyInjection
         /// </summary>
         /// <param name="serviceCollection">The service collection to contain the registration.</param>
         /// <param name="serviceLifetime">The service lifetime. Default is Singleton.</param>
-        /// <returns>A reference to this service collection isntance after the operation has completed.</returns>
+        /// <returns>A reference to this service collection instance after the operation has completed.</returns>
         public static IServiceCollection RegisterDefaultCommandBus(this IServiceCollection serviceCollection,
             ServiceLifetime serviceLifetime = ServiceLifetime.Singleton)
         {
@@ -66,7 +65,7 @@ namespace Ximo.DependencyInjection
         /// <typeparam name="TQueryHandler">The type of the query handler.</typeparam>
         /// <param name="serviceCollection">The service collection to contain the registration.</param>
         /// <param name="serviceLifetime">The service lifetime. Default is Transient.</param>
-        /// <returns>A reference to this service collection isntance after the operation has completed.</returns>
+        /// <returns>A reference to this service collection instance after the operation has completed.</returns>
         public static IServiceCollection RegisterQueryHandler<TQuery, TResult, TQueryHandler>(
             this IServiceCollection serviceCollection, ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
             where TQuery : class
@@ -88,7 +87,7 @@ namespace Ximo.DependencyInjection
         /// </summary>
         /// <param name="serviceCollection">The service collection to contain the registration.</param>
         /// <param name="serviceLifetime">The service lifetime. Default is Singleton.</param>
-        /// <returns>A reference to this service collection isntance after the operation has completed.</returns>
+        /// <returns>A reference to this service collection instance after the operation has completed.</returns>
         public static IServiceCollection RegisterDefaultQueryProcessor(this IServiceCollection serviceCollection,
             ServiceLifetime serviceLifetime = ServiceLifetime.Singleton)
         {
@@ -104,14 +103,14 @@ namespace Ximo.DependencyInjection
         }
 
         /// <summary>
-        ///     Registers the domain event handler. The toolset will automatically create an internal handler to aggregate single
+        ///     Registers the domain event handler. The tool set will automatically create an internal handler to aggregate single
         ///     or multiple handlers for the domain event.
         /// </summary>
         /// <typeparam name="TDomainEvent">The type of the domain event.</typeparam>
         /// <typeparam name="TDomainEventHandler">The type of the domain event handler.</typeparam>
         /// <param name="serviceCollection">The service collection to contain the registration.</param>
         /// <param name="serviceLifetime">The service lifetime. Default is Transient.</param>
-        /// <returns>A reference to this service collection isntance after the operation has completed.</returns>
+        /// <returns>A reference to this service collection instance after the operation has completed.</returns>
         /// <remarks>
         ///     .NET Core does not support multiple registrations for the same type. So we have to use a factory and provide an
         ///     internal handler implementation capable of handling multiple event handler registrations for the same event.
@@ -151,7 +150,7 @@ namespace Ximo.DependencyInjection
         /// </summary>
         /// <param name="serviceCollection">The service collection to contain the registration.</param>
         /// <param name="serviceLifetime">The service lifetime. Default is Singleton.</param>
-        /// <returns>A reference to this service collection isntance after the operation has completed.</returns>
+        /// <returns>A reference to this service collection instance after the operation has completed.</returns>
         public static IServiceCollection RegisterDefaultDomainEventBus(this IServiceCollection serviceCollection,
             ServiceLifetime serviceLifetime = ServiceLifetime.Singleton)
         {
@@ -159,35 +158,37 @@ namespace Ximo.DependencyInjection
         }
 
         /// <summary>
-        /// Registers a single authorisation rule, for a single message be it a command or query.
+        ///     Registers a single authorization rule, for a single message be it a command or query.
         /// </summary>
         /// <typeparam name="TMessage">The type of the message.</typeparam>
-        /// <typeparam name="TAuthorisationRule">The type of the authorisation rule.</typeparam>
+        /// <typeparam name="TAuthorizationRule">The type of the authorization rule.</typeparam>
         /// <param name="serviceCollection">The service collection.</param>
-        /// <returns>A reference to this service collection isntance after the operation has completed.</returns>
-        public static IServiceCollection AddAuthorisationRule<TMessage, TAuthorisationRule>(this IServiceCollection serviceCollection)
-            where TMessage : class 
-            where TAuthorisationRule : class, IAuthorizationRule<TMessage>
+        /// <returns>A reference to this service collection instance after the operation has completed.</returns>
+        public static IServiceCollection AddAuthorizationRule<TMessage, TAuthorizationRule>(
+            this IServiceCollection serviceCollection)
+            where TMessage : class
+            where TAuthorizationRule : class, IAuthorizationRule<TMessage>
         {
-            serviceCollection.AddTransient<IAuthorizationRule<TMessage>, TAuthorisationRule>();
+            serviceCollection.AddTransient<IAuthorizationRule<TMessage>, TAuthorizationRule>();
 
             var serviceDescriptor =
                 serviceCollection.FirstOrDefault(sd => sd.ServiceType == typeof(MessageAuthorisationRules<TMessage>));
 
             if (serviceDescriptor == null)
             {
-                var serviceAuthorisationRules = new MessageAuthorisationRules<TMessage>();
-                serviceAuthorisationRules.AddAuthorisationRule<TAuthorisationRule>();
+                var serviceAuthorizationRules = new MessageAuthorisationRules<TMessage>();
+                serviceAuthorizationRules.AddAuthorisationRule<TAuthorizationRule>();
                 serviceDescriptor = new ServiceDescriptor(typeof(MessageAuthorisationRules<TMessage>),
-                    serviceAuthorisationRules);
+                    serviceAuthorizationRules);
                 serviceCollection.Add(serviceDescriptor);
             }
             else
             {
-                var serviceAuthorisationRules = (MessageAuthorisationRules<TMessage>)serviceDescriptor.ImplementationInstance;
-                if (!serviceAuthorisationRules.Rules.Contains(typeof(TAuthorisationRule)))
+                var serviceAuthorizationRules =
+                    (MessageAuthorisationRules<TMessage>) serviceDescriptor.ImplementationInstance;
+                if (!serviceAuthorizationRules.Rules.Contains(typeof(TAuthorizationRule)))
                 {
-                    serviceAuthorisationRules.AddAuthorisationRule<TAuthorisationRule>();
+                    serviceAuthorizationRules.AddAuthorisationRule<TAuthorizationRule>();
                 }
             }
 
@@ -201,7 +202,7 @@ namespace Ximo.DependencyInjection
         /// <typeparam name="TModule">The type of the module.</typeparam>
         /// <param name="serviceCollection">The service collection to contain the registrations.</param>
         /// <param name="configuration">The optional configuration instance to be used for registrations.</param>
-        /// <returns>A reference to this service collection isntance after the operation has completed.</returns>
+        /// <returns>A reference to this service collection instance after the operation has completed.</returns>
         public static IServiceCollection LoadModule<TModule>(this IServiceCollection serviceCollection,
             IConfiguration configuration = null)
             where TModule : IModule, new()

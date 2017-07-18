@@ -33,7 +33,7 @@ namespace Ximo.Domain
         }
 
         /// <summary>
-        ///     Sets the field. Can be overriden to introduce setting interceptors for purposes of tracking, validation or other.
+        ///     Sets the field. Can be overridden to introduce setting interceptors for purposes of tracking, validation or other.
         /// </summary>
         /// <typeparam name="TFieldType">The type of the field.</typeparam>
         /// <param name="field">The field to set.</param>
@@ -53,7 +53,7 @@ namespace Ximo.Domain
         }
 
         /// <summary>
-        ///     Sets a value object. Can be overriden to introduce setting interceptors for purposes of tracking, validation or
+        ///     Sets a value object. Can be overridden to introduce setting interceptors for purposes of tracking, validation or
         ///     other.
         /// </summary>
         /// <typeparam name="TValueObject">The type of the value object.</typeparam>

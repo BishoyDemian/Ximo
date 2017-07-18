@@ -1,7 +1,7 @@
 ﻿namespace Ximo.Cqrs.Security
 {
     /// <summary>
-    ///     Defines the contract for a manager providing authorisation checks for authenticated messages.
+    ///     Defines the contract for a manager providing authorization checks for authenticated messages.
     /// </summary>
     public interface IAuthorizationManager
     {

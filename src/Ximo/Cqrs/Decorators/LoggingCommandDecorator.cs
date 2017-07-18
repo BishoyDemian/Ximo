@@ -29,7 +29,7 @@ namespace Ximo.Cqrs.Decorators
         }
 
         /// <summary>
-        ///     Handles the specified command whiel applying decorator logic.
+        ///     Handles the specified command while applying decorator logic.
         /// </summary>
         /// <param name="command">The command to be executed.</param>
         public void Handle(TCommand command)

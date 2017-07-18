@@ -10,11 +10,11 @@ namespace Ximo.Domain
     /// </summary>
     /// <typeparam name="TDomainEvent">The type of the domain event.</typeparam>
     /// <seealso cref="Ximo.Domain.IDomainEventHandler{TDomainEvent}" />
-    internal class InternalEventnHandler<TDomainEvent> : IDomainEventHandler<TDomainEvent> where TDomainEvent : class
+    internal class InternalEventHandler<TDomainEvent> : IDomainEventHandler<TDomainEvent> where TDomainEvent : class
     {
         private readonly IServiceProvider _provider;
 
-        public InternalEventnHandler(IServiceProvider provider)
+        public InternalEventHandler(IServiceProvider provider)
         {
             _provider = provider;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ximo.TransientFaultHandling
 {
@@ -156,7 +157,7 @@ namespace Ximo.TransientFaultHandling
                     throw new AggregateException($"Operation retry limit '{NumberOfRetries}' exceeded.",
                         Exceptions.ToList());
                 }
-                System.Threading.Tasks.Task.Delay(1000).Wait();
+                Task.Delay(1000).Wait();
                 Thread.Sleep(RetryWaitTime.Milliseconds);
             }
             else

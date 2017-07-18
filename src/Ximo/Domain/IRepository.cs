@@ -8,7 +8,7 @@
     ///     1. Refrain from implementing generic repositories. Repository methods should be specific and indicating clear
     ///     intent.
     ///     2. The interface is merely introduced to help with dependency injection scenarios and as an output for the unit of
-    ///     work patttern.
+    ///     work pattern.
     /// </remarks>
     public interface IRepository
     {

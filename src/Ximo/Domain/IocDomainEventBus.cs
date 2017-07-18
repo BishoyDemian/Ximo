@@ -28,8 +28,8 @@ namespace Ximo.Domain
         /// <param name="throwExceptionWhenNotSubscribedTo">Throw an exception when the event has no subscribers</param>
         /// <remarks>
         ///     If the event is a concrete type, the interfaces of the event will be looked up and in turn any subscriber to the
-        ///     conretet type or any of the interfaces will be called. Order is not guaranteed in case of multiple exceptions
-        ///     except that the conrete type handler will be the last to be called. This does not include support for class
+        ///     concrete type or any of the interfaces will be called. Order is not guaranteed in case of multiple exceptions
+        ///     except that the concrete type handler will be the last to be called. This does not include support for class
         ///     inheritance and as such base classes will be ignored when searching for subscribers.
         /// </remarks>
         public void Publish<TDomainEvent>(TDomainEvent @event, bool throwExceptionWhenNotSubscribedTo = true)

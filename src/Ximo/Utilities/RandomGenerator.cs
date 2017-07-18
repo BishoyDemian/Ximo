@@ -88,7 +88,7 @@ namespace Ximo.Utilities
         public static DateTime RandomDate(DateTime from, DateTime to)
         {
             var range = new TimeSpan(to.Ticks - from.Ticks);
-            return from + new TimeSpan((long)(range.Ticks * RandomSeed.NextDouble()));
+            return from + new TimeSpan((long) (range.Ticks * RandomSeed.NextDouble()));
         }
 
         /// <summary>

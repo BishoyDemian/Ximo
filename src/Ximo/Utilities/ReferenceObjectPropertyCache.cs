@@ -11,7 +11,7 @@ namespace Ximo.Utilities
     ///     A utility that helps cache the property information of an object.
     /// </summary>
     /// <remarks>
-    ///     Used for avoiding redundant repititive reflection on objects of the same type.
+    ///     Used for avoiding redundant repetitive reflection on objects of the same type.
     /// </remarks>
     public static class ReferenceObjectPropertyCache
     {
@@ -22,7 +22,7 @@ namespace Ximo.Utilities
         ///     Gets the properties for a reference type.
         /// </summary>
         /// <param name="referenceObjectType">Type of the reference object.</param>
-        /// <returns>The properties metadata.</returns>
+        /// <returns>The properties meta data.</returns>
         public static IEnumerable<PropertyInfo> GetProperties(Type referenceObjectType)
         {
             Check.NotNull(referenceObjectType, nameof(referenceObjectType));

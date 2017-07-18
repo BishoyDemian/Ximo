@@ -5,8 +5,8 @@
     /// </summary>
     /// <remarks>
     ///     1. When an operation causes an aggregate a change to the domain, there might other areas in the domain that need to
-    ///     responsd to that change event taking place.
-    ///     2. Also in Event sourcing domain events can also be used to persist the bahaviour of aggregates instead of their
+    ///     respond to that change event taking place.
+    ///     2. Also in Event sourcing domain events can also be used to persist the behavior of aggregates instead of their
     ///     state. Multiple handlers can exist for the same event.
     /// </remarks>
     /// <typeparam name="TDomainEvent">The type of the domain event.</typeparam>

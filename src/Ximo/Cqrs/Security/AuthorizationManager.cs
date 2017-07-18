@@ -37,10 +37,12 @@ namespace Ximo.Cqrs.Security
             var securityExceptions = new List<SecurityException>();
             foreach (var rule in messageRules.Rules)
             {
-                var authorisationRule = (IAuthorizationRule<TMessage>) _dependencyContainer.GetService(rule);
+                var authorizationRule = (IAuthorizationRule<TMessage>) _dependencyContainer.GetService(rule);
 
-                if (!authorisationRule.IsAuthorized(message))
-                    securityExceptions.Add(new SecurityException(authorisationRule.ErrorText));
+                if (!authorizationRule.IsAuthorized(message))
+                {
+                    securityExceptions.Add(new SecurityException(authorizationRule.ErrorText));
+                }
             }
 
             switch (securityExceptions.Count)
@@ -52,7 +54,7 @@ namespace Ximo.Cqrs.Security
                 default:
                     var securityAggregateException = new AggregateException(securityExceptions);
                     throw new SecurityException(
-                        "Multiple authorisation rules broken. Please see inner exception for details.",
+                        "Multiple authorization rules broken. Please see inner exception for details.",
                         securityAggregateException);
             }
         }
