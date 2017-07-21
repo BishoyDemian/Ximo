@@ -11,7 +11,7 @@ namespace Ximo.Cqrs.Security
     ///     authorization rules.
     /// </summary>
     /// <seealso cref="Ximo.Cqrs.Security.IAuthorizationManager" />
-    public sealed class AuthorizationManager : IAuthorizationManager
+    internal sealed class AuthorizationManager : IAuthorizationManager
     {
         private readonly IServiceProvider _dependencyContainer;
 

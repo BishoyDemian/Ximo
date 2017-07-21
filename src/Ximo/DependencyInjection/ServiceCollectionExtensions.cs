@@ -103,6 +103,26 @@ namespace Ximo.DependencyInjection
         }
 
         /// <summary>
+        /// Registers the default authorization manager.
+        /// </summary>
+        /// <param name="serviceCollection">The service collection.</param>
+        /// <param name="serviceLifetime">The service lifetime.</param>
+        /// <returns>A reference to this service collection instance after the operation has completed.</returns>
+        public static IServiceCollection RegisterDefaultAuthorizationManager(this IServiceCollection serviceCollection,
+            ServiceLifetime serviceLifetime = ServiceLifetime.Singleton)
+        {
+            switch (serviceLifetime)
+            {
+                case ServiceLifetime.Transient:
+                    return serviceCollection.AddTransient<IAuthorizationManager, AuthorizationManager>();
+                case ServiceLifetime.Scoped:
+                    return serviceCollection.AddScoped<IAuthorizationManager, AuthorizationManager>();
+                default:
+                    return serviceCollection.AddSingleton<IAuthorizationManager, AuthorizationManager>();
+            }
+        }
+
+        /// <summary>
         ///     Registers the domain event handler. The tool set will automatically create an internal handler to aggregate single
         ///     or multiple handlers for the domain event.
         /// </summary>
@@ -170,6 +190,7 @@ namespace Ximo.DependencyInjection
             where TAuthorizationRule : class, IAuthorizationRule<TMessage>
         {
             serviceCollection.AddTransient<IAuthorizationRule<TMessage>, TAuthorizationRule>();
+            serviceCollection.AddTransient<TAuthorizationRule>();
 
             var serviceDescriptor =
                 serviceCollection.FirstOrDefault(sd => sd.ServiceType == typeof(MessageAuthorisationRules<TMessage>));
