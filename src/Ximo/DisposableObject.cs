@@ -22,6 +22,7 @@ namespace Ximo
             {
                 return;
             }
+
             Dispose(true);
             GC.SuppressFinalize(this);
         }

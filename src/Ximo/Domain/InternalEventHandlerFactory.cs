@@ -50,6 +50,7 @@ namespace Ximo.Domain
             {
                 internalEventHandler.Add(handlerType);
             }
+
             return internalEventHandler;
         }
     }

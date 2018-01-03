@@ -19,11 +19,13 @@ namespace Ximo.Utilities
                 {
                     return _local;
                 }
+
                 int seed;
                 lock (Global)
                 {
                     seed = Global.Next();
                 }
+
                 _local = new Random(seed);
                 return _local;
             }
@@ -109,6 +111,7 @@ namespace Ximo.Utilities
             {
                 chars = chars.ToLowerInvariant();
             }
+
             if (includeSpecialCharacters)
             {
                 chars = chars + "!@#$%^&*()?";
@@ -120,6 +123,7 @@ namespace Ximo.Utilities
             {
                 buffer[i] = chars[RandomSeed.Next(chars.Length)];
             }
+
             return new string(buffer);
         }
 

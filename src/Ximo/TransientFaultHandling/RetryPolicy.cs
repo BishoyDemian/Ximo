@@ -49,6 +49,7 @@ namespace Ximo.TransientFaultHandling
             {
                 throw new ArgumentException("The number of retries cannot be less than 2.");
             }
+
             return new RetryPolicy(numberOfRetries, retryWaitTime);
         }
 
@@ -89,6 +90,7 @@ namespace Ximo.TransientFaultHandling
                     counter = HandleException(strategy, exception, counter);
                 }
             }
+
             return result;
         }
 
@@ -141,6 +143,7 @@ namespace Ximo.TransientFaultHandling
                     counter = HandleException(strategy, exception, counter);
                 }
             }
+
             return result;
         }
 
@@ -157,6 +160,7 @@ namespace Ximo.TransientFaultHandling
                     throw new AggregateException($"Operation retry limit '{NumberOfRetries}' exceeded.",
                         Exceptions.ToList());
                 }
+
                 Task.Delay(1000).Wait();
                 Thread.Sleep(RetryWaitTime.Milliseconds);
             }
@@ -164,6 +168,7 @@ namespace Ximo.TransientFaultHandling
             {
                 throw exception;
             }
+
             return counter;
         }
     }

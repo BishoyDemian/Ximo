@@ -23,6 +23,7 @@ namespace Ximo.Extensions
             {
                 return Activator.CreateInstance(type);
             }
+
             return null;
         }
     }

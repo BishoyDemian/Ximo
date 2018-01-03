@@ -42,6 +42,7 @@ namespace Ximo.Utilities
                              property.PropertyType == typeof(string)))
                     .ToList();
             }
+
             return PropertyCache[referenceObjectType.FullName];
         }
     }

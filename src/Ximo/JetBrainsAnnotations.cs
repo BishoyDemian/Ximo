@@ -316,8 +316,7 @@ namespace JetBrains.Annotations
             BaseType = baseType;
         }
 
-        [NotNull]
-        public Type BaseType { get; }
+        [NotNull] public Type BaseType { get; }
     }
 
     /// <summary>
@@ -384,11 +383,9 @@ namespace JetBrains.Annotations
             TargetFlags = targetFlags;
         }
 
-        [UsedImplicitly]
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
+        [UsedImplicitly] public ImplicitUseKindFlags UseKindFlags { get; private set; }
 
-        [UsedImplicitly]
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        [UsedImplicitly] public ImplicitUseTargetFlags TargetFlags { get; private set; }
     }
 
 
@@ -448,8 +445,7 @@ namespace JetBrains.Annotations
             Comment = comment;
         }
 
-        [NotNull]
-        public string Comment { get; }
+        [NotNull] public string Comment { get; }
     }
 
     /// <summary>
@@ -500,8 +496,7 @@ namespace JetBrains.Annotations
             BasePath = basePath;
         }
 
-        [NotNull]
-        public string BasePath { get; }
+        [NotNull] public string BasePath { get; }
     }
 
     // ASP.NET MVC attributes
@@ -573,8 +568,7 @@ namespace JetBrains.Annotations
             AnonymousProperty = anonymousProperty;
         }
 
-        [NotNull]
-        public string AnonymousProperty { get; }
+        [NotNull] public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -595,8 +589,7 @@ namespace JetBrains.Annotations
             AnonymousProperty = anonymousProperty;
         }
 
-        [NotNull]
-        public string AnonymousProperty { get; }
+        [NotNull] public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -619,8 +612,7 @@ namespace JetBrains.Annotations
             AnonymousProperty = anonymousProperty;
         }
 
-        [NotNull]
-        public string AnonymousProperty { get; }
+        [NotNull] public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -738,8 +730,7 @@ namespace JetBrains.Annotations
             Name = name;
         }
 
-        [NotNull]
-        public string Name { get; }
+        [NotNull] public string Name { get; }
     }
 
     [AttributeUsage(
@@ -752,8 +743,7 @@ namespace JetBrains.Annotations
             Name = name;
         }
 
-        [NotNull]
-        public string Name { get; }
+        [NotNull] public string Name { get; }
     }
 
     // Razor attributes

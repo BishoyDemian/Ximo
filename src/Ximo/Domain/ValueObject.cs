@@ -24,6 +24,7 @@ namespace Ximo.Domain
                 {
                     return _properties;
                 }
+
                 return _properties = ReferenceObjectPropertyCache.GetProperties(ValueObjectType);
             }
         }
@@ -72,6 +73,7 @@ namespace Ximo.Domain
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -88,6 +90,7 @@ namespace Ximo.Domain
             {
                 return Equals((TValueObject) item);
             }
+
             return false;
         }
 

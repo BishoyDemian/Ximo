@@ -98,6 +98,7 @@ namespace Ximo.EventSourcing
                 {
                     throw targetInvocationException.InnerException;
                 }
+
                 throw;
             }
         }

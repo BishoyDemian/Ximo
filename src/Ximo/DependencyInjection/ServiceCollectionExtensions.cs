@@ -103,7 +103,7 @@ namespace Ximo.DependencyInjection
         }
 
         /// <summary>
-        /// Registers the default authorization manager.
+        ///     Registers the default authorization manager.
         /// </summary>
         /// <param name="serviceCollection">The service collection.</param>
         /// <param name="serviceLifetime">The service lifetime.</param>
@@ -233,6 +233,7 @@ namespace Ximo.DependencyInjection
             {
                 module.Configuration = configuration;
             }
+
             module.Initialize(serviceCollection);
             return serviceCollection;
         }
