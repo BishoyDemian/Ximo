@@ -27,11 +27,18 @@ namespace Ximo.Utilities
         {
             Check.NotNull(referenceObjectType, nameof(referenceObjectType));
 
-            if (!PropertyCache.ContainsKey(referenceObjectType.FullName))
+            var fullTypeName = referenceObjectType.FullName;
+
+            if (string.IsNullOrWhiteSpace(fullTypeName))
+            {
+                throw new InvalidOperationException("The type name cannot be null.");
+            }
+
+            if (!PropertyCache.ContainsKey(fullTypeName))
             {
                 var objectType = referenceObjectType.GetTypeInfo();
 
-                PropertyCache[referenceObjectType.FullName] = objectType
+                PropertyCache[fullTypeName] = objectType
                     .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                     .Where(
                         property =>
@@ -43,7 +50,7 @@ namespace Ximo.Utilities
                     .ToList();
             }
 
-            return PropertyCache[referenceObjectType.FullName];
+            return PropertyCache[fullTypeName];
         }
     }
 }
